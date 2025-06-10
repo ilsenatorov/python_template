@@ -39,6 +39,23 @@ build_docker_image() {
     fi
 }
 
+setup_ssh_for_user() {
+    local user="$1"
+    local user_home="/home/$user"
+
+    if [ -d "$user_home" ]; then
+        echo "    -> Setting up .ssh directory for '$user'..."
+        sudo mkdir -p "$user_home/.ssh"
+        sudo touch "$user_home/.ssh/authorized_keys"
+        sudo chmod 700 "$user_home/.ssh"
+        sudo chmod 600 "$user_home/.ssh/authorized_keys"
+        sudo chown -R "$user:$user" "$user_home/.ssh"
+    else
+        echo "    -> WARNING: Home directory for '$user' not found. Cannot set up SSH."
+    fi
+}
+
+
 create_users() {
     echo "STEP 4: Creating user accounts..."
 
@@ -50,6 +67,7 @@ create_users() {
             echo "  - Creating faculty user '$user' and adding to 'sudo' and 'docker' groups."
             useradd -m -s /bin/bash "$user"
             usermod -aG sudo,docker "$user"
+            setup_ssh_for_user "$user"
             echo "    -> ACTION REQUIRED: Add the SSH public key for '$user'."
         fi
     done
@@ -61,6 +79,7 @@ create_users() {
         else
             echo "  - Creating student user '$user'."
             useradd -m -s /bin/bash "$user"
+            setup_ssh_for_user "$user"
             echo "    -> ACTION REQUIRED: Add the SSH public key for '$user'."
         fi
     done
