@@ -1,17 +1,16 @@
-
-# Tags https://hub.docker.com/r/pytorch/pytorch/tags
+# Step 1: Use an official PyTorch base image
 FROM pytorch/pytorch:2.3.0-cuda12.1-cudnn8-runtime
 
 # Step 2: Set up the environment
 ENV PYTHONUNBUFFERED=1 \
-    # Prevents transformers from downloading models to the root user's home
     TRANSFORMERS_CACHE=/home/user/app/cache/transformers \
     HF_HOME=/home/user/app/cache/huggingface
 
 # Step 3: Create a working directory and a non-root user
 WORKDIR /home/user/app
 RUN useradd -ms /bin/bash user
-RUN chown -R user:user /home/user/app
+# Change ownership of the entire home directory for the new user
+RUN chown -R user:user /home/user
 
 # Switch to the non-root user
 USER user
@@ -20,6 +19,7 @@ USER user
 COPY --chown=user:user requirements.txt .
 
 # Step 5: Install Python dependencies from requirements.txt
+# This will now succeed by installing packages into /home/user/.local/
 RUN pip install --no-cache-dir --upgrade pip && \
     pip install --no-cache-dir -r requirements.txt
 
@@ -30,5 +30,4 @@ COPY --chown=user:user . .
 EXPOSE 8888
 
 # Step 8: Define the default command to keep the container running
-# This allows you to attach to it later.
 CMD ["tail", "-f", "/dev/null"]
