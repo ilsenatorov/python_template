@@ -12,7 +12,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added Dockerfile for containerized deployment.
 - Updated `requirements.txt` to include pytorch and other DL stuff.
 
-
 ### Changed
 
 ### Removed

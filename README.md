@@ -1,1 +1,1 @@
-# Python project template
+# SMTB project template
