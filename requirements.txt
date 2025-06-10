@@ -5,17 +5,16 @@ pytest-cov
 pre-commit
 
 # --- Core ML/DL Libraries ---
-torch==2.3.0
-pytorch-lightning==2.2.5
-transformers==4.41.2
-datasets==2.19.2
+torch
+pytorch-lightning
+transformers
+datasets
 
 # --- Common Data Science & Utility Libraries ---
-ipykernel==6.29.4
-pandas==2.2.2
-scikit-learn==1.5.0
-jupyterlab==4.0.6
-tqdm==4.66.4 # For progress bars
-matplotlib==3.9.0 # For plotting
-seaborn==0.13.2 # For prettier plots
-plotly==5.18.1 # For interactive plots
+ipykernel
+pandas
+scikit-learn
+tqdm
+matplotlib
+seaborn
+plotly
